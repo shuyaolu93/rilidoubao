@@ -47,8 +47,27 @@
 
 本仓库为界面复刻与学习用途，示例数字不代表真实行情。
 
-## 部署到 GitHub Pages
+## 部署到 GitHub Pages（仓库名 rilidouboa，Public）
 
-1. 新建仓库并推送本目录；
-2. 仓库 Settings → Pages → Source 选 `main` 分支根目录；
-3. 访问 `https://<用户名>.github.io/<仓库名>/`。
+1. GitHub 网页新建空仓库：https://github.com/new ，名称填 `rilidouboa`，选 **Public**，**不要**勾选 Add a README / license；
+2. 解压仓库包并推送（密码框粘贴 PAT，不是 GitHub 登录密码）：
+
+```bash
+tar xzf macro-event-calendar-repo.tar.gz
+cd macro-event-calendar
+git remote add origin https://github.com/<你的用户名>/rilidouboa.git
+git push -u origin main
+```
+
+3. 仓库 **Settings → Pages** → Source 选 `Deploy from a branch`，Branch 选 `main` / `(root)`，Save；
+4. 约 1 分钟后访问：`https://<你的用户名>.github.io/rilidouboa/`。
+
+无需本地 git 历史时的全新初始化：
+
+```bash
+mkdir rilidouboa && cd rilidouboa && git init -b main
+# 把 index.html / README.md / .gitignore 拷进来
+git add -A && git commit -m "init: JACKAL 事件日历"
+git remote add origin https://github.com/<你的用户名>/rilidouboa.git
+git push -u origin main
+```

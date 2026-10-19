@@ -3,377 +3,329 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>事件日历 · JACKAL 量化投资</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%239C3A2B'/%3E%3Ctext x='16' y='22' font-size='18' text-anchor='middle' fill='%23F3EEE4' font-family='serif' font-weight='700'%3EJ%3C/text%3E%3C/svg%3E">
+<title>观潮台历 · 宏观事件速查</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2333584C'/%3E%3Cpath d='M8 20c3-6 6 6 9 0s6 6 9 0' stroke='%23EDE6D8' stroke-width='2.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
 <style>
   :root{
-    --paper:#F3EEE4;
-    --card:#FBF7EF;
-    --card-border:#E4D8C4;
-    --line:#D8C9B2;
-    --ink:#2C2722;
-    --muted:#8E8271;
-    --faint:#B7AB96;
-    --accent:#9C3A2B;
-    --accent-deep:#832F22;
-    --accent-soft:#F2E0D8;
-    --green:#3F7A50;
-    --red:#B23A2E;
-    --gold:#C9A24B;
+    --paper:#EDE6D8;
+    --card:#F7F1E5;
+    --line:#D8C9AC;
+    --ink:#2A251E;
+    --muted:#8C8069;
+    --faint:#B7A98D;
+    --pine:#33584C;
+    --pine-soft:#E2E8DE;
+    --bronze:#A9783A;
+    --bronze-soft:#F0E4CE;
+    --slate:#5B6B7A;
+    --slate-soft:#E4E9EC;
+    --sage:#6E8B6A;
+    --sage-soft:#E6EDDF;
+    --up:#3E7C59;
+    --down:#B5503F;
+    --gold:#B98A3E;
     --serif:"Noto Serif SC", Georgia, "Songti SC", serif;
     --sans:"Noto Sans SC", -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html{scroll-behavior:smooth}
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:var(--sans);
-    font-weight:400;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 80px}
+  body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-weight:400;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1020px;margin:0 auto;padding:0 22px 72px}
 
   /* ===== 顶栏 ===== */
-  .topbar{display:flex;align-items:center;justify-content:space-between;padding:22px 0 18px;border-bottom:1px solid var(--line)}
-  .brand{display:flex;align-items:center;gap:12px}
-  .brand-mark{width:38px;height:38px;border:1.5px solid var(--ink);border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:900;font-size:15px;line-height:1.05;text-align:center}
-  .brand-mark small{display:block;font-family:var(--sans);font-size:7px;font-weight:400;letter-spacing:.08em}
-  .brand-name{font-family:var(--serif);font-weight:700;font-size:19px;letter-spacing:.02em}
-  .top-actions{display:flex;align-items:center;gap:10px}
-  .icon-btn{width:38px;height:38px;border:1px solid var(--card-border);background:var(--card);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);transition:background .15s}
-  .icon-btn:hover{background:var(--accent-soft)}
-  .toolbox{display:flex;align-items:center;gap:8px;height:38px;padding:0 16px;border:1px solid var(--card-border);background:var(--card);border-radius:20px;cursor:pointer;font-size:13px;color:var(--ink)}
-  .toolbox:hover{background:var(--accent-soft)}
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:22px 0 16px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+  .brand{display:flex;align-items:baseline;gap:12px}
+  .brand-mark{font-family:var(--serif);font-weight:900;font-size:22px;letter-spacing:.06em}
+  .brand-sub{font-size:11px;letter-spacing:.3em;color:var(--muted);text-transform:uppercase}
+  .top-right{display:flex;align-items:center;gap:12px}
+  .clock{font-variant-numeric:tabular-nums;font-size:13px;color:var(--muted)}
+  .search{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:7px 14px}
+  .search input{border:none;background:transparent;outline:none;font:inherit;font-size:13px;width:150px;color:var(--ink)}
+  .search input::placeholder{color:var(--faint)}
+  .bell{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--muted)}
+  .bell:hover{background:var(--pine-soft);color:var(--pine)}
 
-  /* ===== 标题区 ===== */
-  .head{padding:34px 0 18px}
-  .head h1{font-family:var(--serif);font-weight:900;font-size:40px;letter-spacing:.04em}
-  .head p{color:var(--muted);font-size:14px;margin-top:8px}
-  .rule{border:none;border-top:1.5px solid var(--ink);margin:14px 0 0}
+  /* ===== 页头 ===== */
+  .hero{padding:30px 0 18px}
+  .hero h1{font-family:var(--serif);font-weight:900;font-size:38px;letter-spacing:.03em}
+  .hero p{color:var(--muted);font-size:14px;margin-top:8px;max-width:620px}
 
-  /* ===== 窗口条 ===== */
-  .window-row{display:flex;align-items:baseline;justify-content:space-between;padding:22px 0 12px;flex-wrap:wrap;gap:8px}
-  .window-label{font-size:11px;letter-spacing:.28em;color:var(--muted);text-transform:uppercase}
-  .window-range{font-family:var(--serif);font-weight:700;font-size:18px;margin-left:10px;color:var(--ink)}
-  .window-note{font-size:12px;color:var(--muted)}
+  /* ===== 筛选 chips ===== */
+  .chips{display:flex;gap:10px;flex-wrap:wrap;padding:6px 0 18px}
+  .chip{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--card);border-radius:22px;padding:8px 16px;font-size:13px;cursor:pointer;transition:all .15s;color:var(--ink)}
+  .chip:hover{border-color:var(--pine)}
+  .chip .n{font-variant-numeric:tabular-nums;font-weight:700;font-size:12px;background:var(--pine-soft);color:var(--pine);border-radius:10px;padding:1px 8px}
+  .chip.active{background:var(--pine);color:#F7F1E5;border-color:var(--pine)}
+  .chip.active .n{background:rgba(255,255,255,.18);color:#F7F1E5}
 
-  /* ===== 日期条 ===== */
-  .daystrip{display:grid;grid-template-columns:repeat(14,1fr);gap:6px;margin-bottom:26px}
-  .day-cell{background:var(--card);border:1px solid var(--card-border);border-radius:10px;padding:12px 4px 10px;text-align:center;cursor:pointer;transition:background .15s,border-color .15s;min-width:0}
-  .day-cell:hover{background:var(--accent-soft)}
-  .day-cell .wd{font-size:11px;color:var(--muted)}
-  .day-cell .num{font-family:var(--serif);font-weight:700;font-size:22px;margin-top:2px}
-  .day-cell.today .num{color:var(--accent)}
-  .day-cell.today{border-color:var(--accent);background:#F8ECE6}
-  .day-cell.dim{color:var(--faint)}
-  .dots{height:10px;margin-top:4px;display:flex;gap:3px;justify-content:center;flex-wrap:wrap}
-  .dot{width:5px;height:5px;border-radius:50%;background:var(--accent)}
-  .day-cell.active{outline:1.5px solid var(--accent);outline-offset:2px}
+  /* ===== 日期导轨 ===== */
+  .rail{display:flex;gap:8px;overflow-x:auto;padding:6px 2px 16px;scrollbar-width:thin}
+  .day{flex:0 0 74px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 8px;text-align:center;cursor:pointer;position:relative;transition:all .15s}
+  .day:hover{transform:translateY(-2px)}
+  .day .wd{font-size:11px;color:var(--muted)}
+  .day .num{font-family:var(--serif);font-weight:700;font-size:24px;margin:2px 0 4px;font-variant-numeric:tabular-nums}
+  .day .dots{display:flex;gap:3px;justify-content:center;min-height:6px}
+  .day .dots i{width:5px;height:5px;border-radius:50%;background:var(--bronze)}
+  .day.today{background:var(--pine);color:#F7F1E5}
+  .day.today .wd{color:rgba(247,241,229,.75)}
+  .day.today .dots i{background:#F0E4CE}
+  .day.today::after{content:"今日";position:absolute;top:6px;right:8px;font-size:9px;letter-spacing:.1em}
+  .day.weekend .num{color:var(--faint)}
 
-  /* ===== 统计卡 ===== */
-  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:40px}
-  .stat{background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:18px 18px 16px;cursor:pointer;position:relative;transition:background .15s}
-  .stat:hover{background:#F7EFE4}
-  .stat .cat{font-size:11px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase}
-  .stat .big{font-family:var(--serif);font-weight:900;font-size:40px;line-height:1.2;margin:6px 0 2px}
-  .stat .big small{font-size:15px;font-weight:600;margin-left:3px}
-  .stat .sub{font-size:13px;color:var(--muted)}
-  .stat.selected{border:2.5px solid var(--accent);box-shadow:inset 0 0 0 3px var(--card),inset 0 0 0 4.5px var(--accent)}
-  .stat.selected::after{content:"";position:absolute;top:12px;right:12px;width:7px;height:7px;border-radius:50%;background:var(--accent)}
+  /* ===== KPI 条 ===== */
+  .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:6px 0 26px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+  .kpi .k{font-size:12px;color:var(--muted)}
+  .kpi .v{font-family:var(--serif);font-weight:900;font-size:30px;margin-top:2px;font-variant-numeric:tabular-nums}
+  .kpi .u{font-size:13px;font-weight:600;color:var(--muted);margin-left:3px}
 
-  /* ===== 日程标题 ===== */
-  .sec-head{display:flex;align-items:baseline;gap:14px;margin:10px 0 18px;flex-wrap:wrap}
-  .sec-head h2{font-family:var(--serif);font-weight:900;font-size:28px}
-  .sec-head .sub{font-size:13px;color:var(--muted)}
+  /* ===== 央行会议卡 ===== */
+  .cbank{display:grid;grid-template-columns:220px 1fr;gap:24px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 26px;margin-bottom:30px;align-items:center}
+  .cbank .cd{text-align:center;border-right:1px dashed var(--line);padding-right:24px}
+  .cbank .cd .big{font-family:var(--serif);font-weight:900;font-size:52px;line-height:1;color:var(--pine)}
+  .cbank .cd .lbl{font-size:12px;color:var(--muted);margin-top:6px}
+  .cbank .meta{display:grid;grid-template-columns:1fr 1fr;gap:10px 24px}
+  .cbank .meta .row{display:flex;justify-content:space-between;gap:12px;font-size:13.5px;padding:6px 0;border-bottom:1px dotted var(--line)}
+  .cbank .meta .row:last-child{border-bottom:none}
+  .cbank .meta .k{color:var(--muted);white-space:nowrap}
+  .cbank .meta .v{text-align:right;font-variant-numeric:tabular-nums}
 
-  /* ===== FOMC 卡 ===== */
-  .fomc{background:var(--card);border:1px solid var(--card-border);border-radius:12px;padding:22px 26px;margin-bottom:34px}
-  .fomc-top{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;margin-bottom:8px}
-  .fomc-title{font-family:var(--serif);font-weight:700;font-size:18px}
-  .fomc-src{font-size:12px;color:var(--muted)}
-  .fomc-updated{font-size:12px;color:var(--faint)}
-  .frow{display:flex;justify-content:space-between;align-items:baseline;padding:9px 0;border-bottom:1px dotted var(--line);font-size:14px}
-  .frow:last-child{border-bottom:none}
-  .frow .k{color:var(--muted);white-space:nowrap}
-  .frow .v{text-align:right;font-variant-numeric:tabular-nums}
-
-  /* ===== 事件分组列表 ===== */
-  .group{margin-bottom:22px}
-  .g-head{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line)}
-  .g-head .bullet{width:8px;height:8px;border-radius:50%;background:var(--accent);flex:none}
-  .g-head .g-date{font-family:var(--serif);font-weight:700;font-size:16px}
-  .g-head .tbadge{font-size:11px;color:var(--muted);border:1px solid var(--card-border);border-radius:4px;padding:1px 7px}
-  .g-head .g-count{margin-left:auto;font-size:12px;color:var(--muted)}
-  .g-head.past .bullet{background:var(--faint)}
+  /* ===== 事件分组 ===== */
+  .group{margin-bottom:18px}
+  .g-head{display:flex;align-items:baseline;gap:12px;padding:12px 4px 8px}
+  .g-head .sq{width:9px;height:9px;background:var(--pine);border-radius:2px;align-self:center}
+  .g-head .gd{font-family:var(--serif);font-weight:700;font-size:17px}
+  .g-head .tb{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:1px 8px}
+  .g-head .cnt{margin-left:auto;font-size:12px;color:var(--muted)}
+  .g-body{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .ev{display:grid;grid-template-columns:64px 78px 64px minmax(160px,1fr) 96px 96px 78px;gap:10px;align-items:center;padding:13px 18px;border-bottom:1px solid #E7DCC4;min-width:640px}
+  .ev:last-child{border-bottom:none}
+  .ev.hl{background:var(--pine-soft)}
+  .ev .t{font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px}
+  .ev .stars{font-size:12px;letter-spacing:2px;color:var(--gold)}
+  .ev .stars .off{color:#D6C8A8}
+  .tag{justify-self:start;font-size:11px;padding:2px 9px;border-radius:10px;font-weight:500}
+  .tag.macro{background:var(--pine-soft);color:var(--pine)}
+  .tag.earnings{background:var(--bronze-soft);color:var(--bronze)}
+  .tag.ipo{background:var(--slate-soft);color:var(--slate)}
+  .tag.splits{background:#ECE6DC;color:#8A7D66}
+  .tag.dividends{background:var(--sage-soft);color:var(--sage)}
+  .ev .name{font-size:14px;font-weight:500}
+  .ev .val{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+  .ev .est{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px}
+  .delta{justify-self:end;font-variant-numeric:tabular-nums;font-weight:700;font-size:13px;border-radius:8px;padding:2px 9px}
+  .delta.up{color:var(--up);background:#E2EFE7}
+  .delta.down{color:var(--down);background:#F7E6E1}
+  .delta.na{color:var(--faint);background:transparent;font-weight:400}
   .ev-scroll{overflow-x:auto}
-  .ev-row{display:grid;grid-template-columns:72px 92px minmax(180px,1fr) 64px 100px 100px 80px;gap:10px;align-items:center;padding:13px 10px;border-bottom:1px dotted #E7DCC9;min-width:680px}
-  .ev-row.hl{background:var(--accent-soft);border-radius:8px;border-bottom:1px solid var(--accent-soft)}
-  .ev-time{font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px}
-  .stars{font-size:13px;letter-spacing:2px;color:var(--gold)}
-  .stars .off{color:#D9CDB6}
-  .ev-name{font-size:14px;font-weight:500}
-  .ev-period{font-size:12px;color:var(--muted);text-align:center}
-  .ev-val{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;font-size:14px}
-  .ev-est{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px}
-  .ev-delta{text-align:right;font-variant-numeric:tabular-nums;font-weight:700;font-size:13px}
-  .up{color:var(--green)}
-  .down{color:var(--red)}
-  .na{color:var(--faint);font-weight:400}
-  .empty{padding:40px;text-align:center;color:var(--muted);font-size:14px;border:1px dashed var(--line);border-radius:12px}
+  .empty{padding:44px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:14px;font-size:14px}
 
-  /* ===== 图例 ===== */
-  .legend{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:2}
-
-  /* ===== Toast ===== */
-  #toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(20px);background:var(--ink);color:var(--paper);padding:10px 20px;border-radius:24px;font-size:13px;opacity:0;pointer-events:none;transition:all .25s;z-index:50}
+  .legend{margin-top:30px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);line-height:2}
+  #toast{position:fixed;left:50%;bottom:32px;transform:translateX(-50%) translateY(16px);background:var(--ink);color:var(--paper);padding:10px 20px;border-radius:22px;font-size:13px;opacity:0;pointer-events:none;transition:all .25s;z-index:50}
   #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-  /* ===== 响应式 ===== */
-  @media (max-width:900px){
-    .stats{grid-template-columns:repeat(3,1fr)}
-    .daystrip{grid-template-columns:repeat(7,1fr);row-gap:6px}
-    .head h1{font-size:32px}
+  @media (max-width:860px){
+    .kpis{grid-template-columns:repeat(2,1fr)}
+    .cbank{grid-template-columns:1fr}
+    .cbank .cd{border-right:none;border-bottom:1px dashed var(--line);padding:0 0 14px}
+    .hero h1{font-size:30px}
   }
-  @media (max-width:560px){
-    .wrap{padding:0 14px 60px}
-    .stats{grid-template-columns:repeat(2,1fr)}
-    .stat .big{font-size:32px}
-    .day-cell .num{font-size:18px}
-    .toolbox span.lbl{display:none}
-    .fomc{padding:18px}
+  @media (max-width:520px){
+    .wrap{padding:0 14px 56px}
+    .kpis{grid-template-columns:1fr 1fr}
+    .search input{width:110px}
+    .cbank .meta{grid-template-columns:1fr}
   }
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <!-- ===== 顶栏 ===== -->
   <header class="topbar">
     <div class="brand">
-      <div class="brand-mark">J<small>量化投资</small></div>
-      <div class="brand-name">JACKAL 量化投资</div>
+      <span class="brand-mark">观潮台历</span>
+      <span class="brand-sub">Tide Macro Desk</span>
     </div>
-    <div class="top-actions">
-      <button class="icon-btn" id="btn-user" aria-label="账户">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg>
-      </button>
-      <button class="icon-btn" id="btn-bell" aria-label="提醒">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M6 10a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
-      </button>
-      <button class="toolbox" id="btn-toolbox">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-        <span class="lbl">平台交易工具箱</span>
+    <div class="top-right">
+      <span class="clock" id="clock">ET --:--</span>
+      <label class="search">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="q" type="text" placeholder="搜事件名…">
+      </label>
+      <button class="bell" id="bell" aria-label="提醒">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 10a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"/><path d="M10 20a2 2 0 0 0 4 0"/></svg>
       </button>
     </div>
   </header>
 
-  <!-- ===== 标题 ===== -->
-  <section class="head">
-    <h1>事件日历</h1>
-    <p>未来两周的宏观日程、财报、IPO、拆股与分红，时间均为美东。</p>
-    <hr class="rule">
+  <section class="hero">
+    <h1>宏观事件台历</h1>
+    <p>滚动两周窗口，把美国宏观数据、财报、IPO 与分红排在一起看；数值列依次为最新值、市场预期与差值，时间统一为美东。</p>
   </section>
 
-  <!-- ===== 窗口 ===== -->
-  <div class="window-row">
-    <div><span class="window-label">Window</span><span class="window-range" id="range"></span></div>
-    <div class="window-note">滚动窗口 · 自今日起 14 天</div>
-  </div>
+  <div class="chips" id="chips"></div>
+  <div class="rail" id="rail"></div>
 
-  <!-- ===== 日期条（渲染） ===== -->
-  <div class="daystrip" id="daystrip"></div>
+  <div class="kpis" id="kpis"></div>
 
-  <!-- ===== 统计卡（渲染） ===== -->
-  <div class="stats" id="stats"></div>
-
-  <!-- ===== 日程 ===== -->
-  <div class="sec-head">
-    <h2>日程</h2>
-    <span class="sub" id="sec-sub">宏观数据与美联储日程 · 时间为美东</span>
-  </div>
-
-  <!-- ===== FOMC ===== -->
-  <div class="fomc">
-    <div class="fomc-top">
-      <div><span class="fomc-title">下一次 FOMC</span><span class="fomc-src">　美联储官方日历 · 美东时间 ET</span></div>
-      <div class="fomc-updated" id="fomc-updated">官方日程更新于 2026-09-20</div>
+  <section class="cbank">
+    <div class="cd">
+      <div class="big" id="fb-days">—</div>
+      <div class="lbl">距下次议息会议（天）</div>
     </div>
-    <div class="frow"><span class="k">会议日期</span><span class="v">10月27日至10月28日 · 为期两天</span></div>
-    <div class="frow"><span class="k">利率决议</span><span class="v">10月28日 14:00 ET</span></div>
-    <div class="frow"><span class="k">新闻发布会</span><span class="v">10月28日 14:30 ET</span></div>
-    <div class="frow"><span class="k">点阵图 / SEP</span><span class="v">本次不公布</span></div>
-    <div class="frow"><span class="k">距今</span><span class="v" id="fomc-countdown">—</span></div>
-    <div class="frow"><span class="k">下次纪要</span><span class="v">10月7日 14:00 ET · FOMC 会议纪要（September 15-16 那次会议）</span></div>
-  </div>
+    <div class="meta">
+      <div class="row"><span class="k">会议</span><span class="v">联邦公开市场委员会 · 两日会期</span></div>
+      <div class="row"><span class="k">利率决议公布</span><span class="v" id="fb-decision">10月28日 14:00 ET</span></div>
+      <div class="row"><span class="k">主席发布会</span><span class="v">10月28日 14:30 ET</span></div>
+      <div class="row"><span class="k">本期点阵图</span><span class="v">不发布</span></div>
+      <div class="row"><span class="k">上次纪要</span><span class="v">10月7日 14:00 ET</span></div>
+      <div class="row"><span class="k">官方来源</span><span class="v">美联储公开日程</span></div>
+    </div>
+  </section>
 
-  <!-- ===== 事件列表（渲染） ===== -->
   <div id="list"></div>
 
-  <!-- ===== 图例 ===== -->
   <div class="legend">
-    ★ = 事件重要性（满 3 星）　·　Δ = 预期 − 前值　·　数据每天更新 1 次（纽约时间 20:00 后）　·　财报仅保留有分析师 EPS 预期的公司<br>
-    当前为内置示例数据，用于界面演示；接入真实数据源后自动替换。
+    星级表示市场关注度（满星 3 颗）；差值 = 最新值 − 预期，绿为偏强、红为偏弱；未公布事件以「待公布」显示。本页为演示样本数据，接入真实数据源后自动替换。
   </div>
 </div>
 
 <div id="toast"></div>
 
 <script>
-/* ================= 示例数据（演示用，可替换为真实接口返回） =================
+/* ===== 示例样本数据（演示用；结构可直接对接日历接口） =====
    cat: macro 宏观 / earnings 财报 / ipo / splits 拆股 / dividends 分红
-   offset: 距今天天数（0 = 今天）；published=false 时显示“未公布”
-   trend: up / down / null；delta: 差值文本（已带符号）                       */
+   offset: 距今天天数；stars 1-3；published=false 显示待公布；trend up/down/null */
 const EVENTS = [
-  // —— 宏观 ——
-  {offset:1, t:"09:45", stars:2, cat:"macro", name:"标普全球制造业 PMI", period:"Sep", actual:"53.6", est:"53.9", prior:"", delta:"-0.3", trend:"down", published:true},
-  {offset:1, t:"09:45", stars:2, cat:"macro", name:"标普全球服务业 PMI", period:"Sep", actual:"56", est:"56.5", prior:"", delta:"-0.5", trend:"down", published:true},
-  {offset:2, t:"08:30", stars:2, cat:"macro", name:"初请失业金人数", period:"Sep/19", actual:"202", est:"196", prior:"", delta:"+6", trend:"up", published:true},
-  {offset:2, t:"10:00", stars:2, cat:"macro", name:"新屋销售总数", period:"Aug", actual:"0.61", est:"0.607", prior:"", delta:"+0.0", trend:"up", published:true, hl:true},
-  {offset:3, t:"08:30", stars:2, cat:"macro", name:"耐用品订单 月率", period:"Aug", actual:"-0.5", est:"1.1", prior:"", delta:"-1.6", trend:"down", published:true},
-  {offset:7, t:"10:00", stars:2, cat:"macro", name:"JOLTS 职位空缺", period:"Aug", actual:"7.2", est:"7.271", prior:"", delta:"-0.07", trend:"down", published:true},
-  {offset:8, t:"08:15", stars:3, cat:"macro", name:"ADP 就业人数（小非农）", period:"Sep", actual:"75", est:"38", prior:"", delta:"+37", trend:"up", published:true},
-  {offset:8, t:"08:30", stars:3, cat:"macro", name:"核心 PCE 物价指数 年率（美联储最关注）", period:"Aug", actual:"未公布", est:"3.3", prior:"", delta:"—", trend:null, published:false},
-  {offset:8, t:"08:30", stars:3, cat:"macro", name:"PCE 物价指数 年率", period:"Aug", actual:"未公布", est:"3.7", prior:"", delta:"—", trend:null, published:false},
-  {offset:9, t:"08:30", stars:2, cat:"macro", name:"初请失业金人数", period:"Sep/26", actual:"未公布", est:"—", prior:"", delta:"—", trend:null, published:false},
-  {offset:9, t:"10:00", stars:2, cat:"macro", name:"ISM 制造业 PMI", period:"Sep", actual:"54", est:"54.6", prior:"", delta:"-0.6", trend:"down", published:true},
-  {offset:11, t:"08:30", stars:3, cat:"macro", name:"非农就业人口", period:"Sep", actual:"120", est:"162", prior:"", delta:"-42", trend:"down", published:true},
-  {offset:11, t:"08:30", stars:3, cat:"macro", name:"失业率", period:"Sep", actual:"4.3", est:"4.1", prior:"", delta:"+0.2", trend:"up", published:true},
-  {offset:11, t:"08:30", stars:2, cat:"macro", name:"平均每小时工资 月率", period:"Sep", actual:"0.2", est:"0.3", prior:"", delta:"-0.1", trend:"down", published:true},
-  {offset:13, t:"10:00", stars:2, cat:"macro", name:"ISM 非制造业 PMI", period:"Sep", actual:"54", est:"55.4", prior:"", delta:"-1.4", trend:"down", published:true, hl:true},
-  // —— 财报（示例，接入后替换为真实 EPS） ——
-  {offset:1, t:"盘后", stars:2, cat:"earnings", name:"示例公司 A（演示）· EPS", period:"Q3", actual:"1.12", est:"1.05", prior:"", delta:"+0.07", trend:"up", published:true},
-  {offset:4, t:"盘前", stars:2, cat:"earnings", name:"示例公司 B（演示）· EPS", period:"Q3", actual:"0.88", est:"0.92", prior:"", delta:"-0.04", trend:"down", published:true},
-  {offset:6, t:"盘后", stars:3, cat:"earnings", name:"示例公司 C（演示）· EPS", period:"Q3", actual:"未公布", est:"1.30", prior:"", delta:"—", trend:null, published:false},
-  // —— IPO（示例） ——
-  {offset:2, t:"待定", stars:1, cat:"ipo", name:"示例 IPO-1（演示）", period:"NYSE", actual:"—", est:"—", prior:"", delta:"—", trend:null, published:false},
-  {offset:5, t:"待定", stars:1, cat:"ipo", name:"示例 IPO-2（演示）", period:"NASDAQ", actual:"—", est:"—", prior:"", delta:"—", trend:null, published:false},
-  {offset:10, t:"待定", stars:1, cat:"ipo", name:"示例 IPO-3（演示）", period:"NYSE", actual:"—", est:"—", prior:"", delta:"—", trend:null, published:false},
-  // —— 拆股：本窗口 0 起 ——
-  // —— 分红（示例） ——
-  {offset:1, t:"盘前", stars:1, cat:"dividends", name:"示例公司 A（演示）· 除息", period:"年度", actual:"$0.42", est:"—", prior:"", delta:"+2.5%", trend:"up", published:false},
-  {offset:3, t:"盘前", stars:1, cat:"dividends", name:"示例公司 D（演示）· 除息", period:"季度", actual:"$0.30", est:"—", prior:"", delta:"0.0%", trend:null, published:false},
-  {offset:6, t:"盘前", stars:1, cat:"dividends", name:"示例公司 E（演示）· 除息", period:"季度", actual:"$0.18", est:"—", prior:"", delta:"0.0%", trend:null, published:false},
-  {offset:9, t:"盘前", stars:1, cat:"dividends", name:"示例公司 F（演示）· 除息", period:"月度", actual:"$0.11", est:"—", prior:"", delta:"0.0%", trend:null, published:false},
-  {offset:12, t:"盘前", stars:1, cat:"dividends", name:"示例公司 G（演示）· 除息", period:"季度", actual:"$0.35", est:"—", prior:"", delta:"+1.4%", trend:"up", published:false},
+  {offset:1, t:"09:45", stars:2, cat:"macro", name:"S&P 全球制造业 PMI", period:"9月", actual:"53.6", est:"53.9", delta:"-0.3", trend:"down", published:true},
+  {offset:1, t:"09:45", stars:2, cat:"macro", name:"S&P 全球服务业 PMI", period:"9月", actual:"56.0", est:"56.5", delta:"-0.5", trend:"down", published:true},
+  {offset:2, t:"08:30", stars:2, cat:"macro", name:"初请失业金人数", period:"9/19周", actual:"20.2万", est:"19.6万", delta:"+0.6万", trend:"up", published:true},
+  {offset:2, t:"10:00", stars:2, cat:"macro", name:"新房销售年化总数", period:"8月", actual:"61万", est:"60.7万", delta:"+0.3万", trend:"up", published:true, hl:true},
+  {offset:3, t:"08:30", stars:2, cat:"macro", name:"耐用品订单月率", period:"8月", actual:"-0.5%", est:"+1.1%", delta:"-1.6pct", trend:"down", published:true},
+  {offset:7, t:"10:00", stars:2, cat:"macro", name:"JOLTS 职位空缺", period:"8月", actual:"720万", est:"727万", delta:"-7万", trend:"down", published:true},
+  {offset:8, t:"08:15", stars:3, cat:"macro", name:"ADP 私人就业（小非农）", period:"9月", actual:"7.5万", est:"3.8万", delta:"+3.7万", trend:"up", published:true},
+  {offset:8, t:"08:30", stars:3, cat:"macro", name:"核心 PCE 物价 · 年率", period:"8月", actual:"待公布", est:"3.3%", delta:"—", trend:null, published:false},
+  {offset:8, t:"08:30", stars:3, cat:"macro", name:"PCE 物价 · 年率", period:"8月", actual:"待公布", est:"3.7%", delta:"—", trend:null, published:false},
+  {offset:9, t:"08:30", stars:2, cat:"macro", name:"初请失业金人数", period:"9/26周", actual:"待公布", est:"—", delta:"—", trend:null, published:false},
+  {offset:9, t:"10:00", stars:2, cat:"macro", name:"ISM 制造业 PMI", period:"9月", actual:"54.0", est:"54.6", delta:"-0.6", trend:"down", published:true},
+  {offset:11, t:"08:30", stars:3, cat:"macro", name:"非农就业新增", period:"9月", actual:"12.0万", est:"16.2万", delta:"-4.2万", trend:"down", published:true},
+  {offset:11, t:"08:30", stars:3, cat:"macro", name:"失业率", period:"9月", actual:"4.3%", est:"4.1%", delta:"+0.2pct", trend:"up", published:true},
+  {offset:11, t:"08:30", stars:2, cat:"macro", name:"平均时薪月率", period:"9月", actual:"0.2%", est:"0.3%", delta:"-0.1pct", trend:"down", published:true},
+  {offset:13, t:"10:00", stars:2, cat:"macro", name:"ISM 非制造业 PMI", period:"9月", actual:"54.0", est:"55.4", delta:"-1.4", trend:"down", published:true, hl:true},
+  {offset:1, t:"盘后", stars:2, cat:"earnings", name:"样本公司 A · EPS", period:"Q3", actual:"1.12", est:"1.05", delta:"+0.07", trend:"up", published:true},
+  {offset:4, t:"盘前", stars:2, cat:"earnings", name:"样本公司 B · EPS", period:"Q3", actual:"0.88", est:"0.92", delta:"-0.04", trend:"down", published:true},
+  {offset:6, t:"盘后", stars:3, cat:"earnings", name:"样本公司 C · EPS", period:"Q3", actual:"待公布", est:"1.30", delta:"—", trend:null, published:false},
+  {offset:2, t:"待定", stars:1, cat:"ipo", name:"样本新股 I-1（纽交所）", period:"本周", actual:"—", est:"—", delta:"—", trend:null, published:false},
+  {offset:5, t:"待定", stars:1, cat:"ipo", name:"样本新股 I-2（纳斯达克）", period:"本周", actual:"—", est:"—", delta:"—", trend:null, published:false},
+  {offset:10, t:"待定", stars:1, cat:"ipo", name:"样本新股 I-3（纽交所）", period:"本周", actual:"—", est:"—", delta:"—", trend:null, published:false},
+  {offset:1, t:"盘前", stars:1, cat:"dividends", name:"样本公司 A · 除息", period:"年度", actual:"$0.42", est:"—", delta:"+2.5%", trend:"up", published:false},
+  {offset:3, t:"盘前", stars:1, cat:"dividends", name:"样本公司 D · 除息", period:"季度", actual:"$0.30", est:"—", delta:"0.0%", trend:null, published:false},
+  {offset:6, t:"盘前", stars:1, cat:"dividends", name:"样本公司 E · 除息", period:"季度", actual:"$0.18", est:"—", delta:"0.0%", trend:null, published:false},
+  {offset:9, t:"盘前", stars:1, cat:"dividends", name:"样本公司 F · 除息", period:"月度", actual:"$0.11", est:"—", delta:"0.0%", trend:null, published:false},
+  {offset:12, t:"盘前", stars:1, cat:"dividends", name:"样本公司 G · 除息", period:"季度", actual:"$0.35", est:"—", delta:"+1.4%", trend:"up", published:false},
 ];
-
-const CATS = [
-  {key:"macro",     label:"Macro",     unit:"项", sub:"日程"},
-  {key:"earnings",  label:"Earnings",  unit:"家", sub:"财报"},
-  {key:"ipo",       label:"IPO",       unit:"宗", sub:"IPO"},
-  {key:"splits",    label:"Splits",    unit:"起", sub:"拆股"},
-  {key:"dividends", label:"Dividends", unit:"笔", sub:"分红"},
+const CATS=[
+  {key:"all",label:"全部"},
+  {key:"macro",label:"宏观"},
+  {key:"earnings",label:"财报"},
+  {key:"ipo",label:"IPO"},
+  {key:"splits",label:"拆股"},
+  {key:"dividends",label:"分红"},
 ];
-const NEXT_FOMC = new Date(2026,9,27); // 2026-10-27（月从0起）
-const W = 14;
-const WD = ["日","一","二","三","四","五","六"];
-const state = {cat:"macro", query:"", focusOffset:null};
+const NEXT_FOMC=new Date(2026,9,27);
+const W=14, WD=["周日","周一","周二","周三","周四","周五","周六"];
+const state={cat:"all",q:""};
 
-/* ---------- 工具 ---------- */
-function d(offset){ const x=new Date(); x.setDate(x.getDate()+offset); return x; }
-function fmt(m,d0){ return String(m+1).padStart(2,"0")+"/"+String(d0).padStart(2,"0"); }
-function esc(s){ return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
-function stars(n){ let h=""; for(let i=1;i<=3;i++) h+= i<=n? "★":'<span class="off">★</span>'; return h; }
+const d=n=>{const x=new Date();x.setDate(x.getDate()+n);return x;};
+const fmt=(m,d0)=>String(m+1).padStart(2,"0")+"/"+String(d0).padStart(2,"0");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const stars=n=>{let h="";for(let i=1;i<=3;i++)h+=i<=n?"★":'<span class="off">★</span>';return h;};
 
-/* ---------- 窗口条 ---------- */
-function renderRange(){
-  const a=d(0), b=d(W-1);
-  document.getElementById("range").textContent = fmt(a.getMonth(),a.getDate())+"  –  "+fmt(b.getMonth(),b.getDate());
+/* 顶栏 ET 时钟 */
+function tick(){
+  try{
+    const s=new Intl.DateTimeFormat("zh-CN",{timeZone:"America/New_York",hour:"2-digit",minute:"2-digit",hour12:false}).format(new Date());
+    document.getElementById("clock").textContent="ET "+s;
+  }catch(e){}
 }
+tick(); setInterval(tick,30000);
 
-/* ---------- 日期条 ---------- */
-function renderStrip(){
-  const el=document.getElementById("daystrip"); el.innerHTML="";
-  for(let i=0;i<W;i++){
-    const dt=d(i);
-    const count=EVENTS.filter(e=>e.offset===i).length;
-    const isWeekend = dt.getDay()===0 || dt.getDay()===6;
-    const cell=document.createElement("div");
-    cell.className="day-cell"+(i===0?" today":"")+(isWeekend?" dim":"")+(state.focusOffset===i?" active":"");
-    cell.innerHTML=`<div class="wd">${i===0?"今日":WD[dt.getDay()]}</div><div class="num">${dt.getDate()}</div>
-      <div class="dots">${Array.from({length:Math.min(count,3)}).map(()=>'<span class="dot"></span>').join("")}</div>`;
-    cell.addEventListener("click",()=>{ state.focusOffset=i; state.cat="all"; render(); const g=document.getElementById("g-"+i); if(g) g.scrollIntoView({behavior:"smooth",block:"start"}); });
-    el.appendChild(cell);
-  }
-}
-
-/* ---------- 统计卡 ---------- */
-function renderStats(){
-  const el=document.getElementById("stats"); el.innerHTML="";
+function renderChips(){
+  const el=document.getElementById("chips");el.innerHTML="";
   CATS.forEach(c=>{
-    const n=EVENTS.filter(e=>e.cat===c.key).length;
-    const card=document.createElement("div");
-    card.className="stat"+(state.cat===c.key?" selected":"");
-    card.innerHTML=`<div class="cat">${c.label}</div><div class="big">${n}<small>${c.unit}</small></div><div class="sub">${c.sub}</div>`;
-    card.addEventListener("click",()=>{ state.cat = state.cat===c.key ? "all" : c.key; state.focusOffset=null; render(); });
-    el.appendChild(card);
+    const n=c.key==="all"?EVENTS.length:EVENTS.filter(e=>e.cat===c.key).length;
+    const b=document.createElement("button");
+    b.className="chip"+(state.cat===c.key?" active":"");
+    b.innerHTML=`${c.label}<span class="n">${n}</span>`;
+    b.onclick=()=>{state.cat=c.key;render();};
+    el.appendChild(b);
   });
 }
 
-/* ---------- 事件行 ---------- */
+function renderRail(){
+  const el=document.getElementById("rail");el.innerHTML="";
+  for(let i=0;i<W;i++){
+    const dt=d(i),we=dt.getDay()===0||dt.getDay()===6;
+    const cnt=EVENTS.filter(e=>e.offset===i).length;
+    const c=document.createElement("div");
+    c.className="day"+(i===0?" today":"")+(we?" weekend":"");
+    c.innerHTML=`<div class="wd">${i===0?"今天":WD[dt.getDay()]}</div><div class="num">${dt.getDate()}</div><div class="dots">${Array.from({length:Math.min(cnt,3)}).map(()=>"<i></i>").join("")}</div>`;
+    c.onclick=()=>{const g=document.getElementById("g-"+i);if(g)g.scrollIntoView({behavior:"smooth",block:"start"});};
+    el.appendChild(c);
+  }
+}
+
+function renderKpis(){
+  const total=EVENTS.length;
+  const high=EVENTS.filter(e=>e.stars===3).length;
+  const pending=EVENTS.filter(e=>!e.published).length;
+  const now=new Date();now.setHours(0,0,0,0);
+  const cd=Math.max(0,Math.round((NEXT_FOMC-now)/86400000));
+  const items=[["窗口事件",total,"件"],["三星关注",high,"项"],["待公布",pending,"项"],["距议息",cd,"天"]];
+  document.getElementById("kpis").innerHTML=items.map(([k,v,u])=>`<div class="kpi"><div class="k">${k}</div><div class="v">${v}<span class="u">${u}</span></div></div>`).join("");
+  document.getElementById("fb-days").textContent=cd;
+}
+
 function rowHTML(e){
-  const trend = e.trend==="up" ? "▲" : e.trend==="down" ? "▼" : "";
-  const deltaCls = e.trend==="up"?"up":e.trend==="down"?"down":"na";
-  const actualCls = e.published ? "" : "na";
-  return `<div class="ev-row${e.hl?" hl":""}">
-    <div class="ev-time">${e.t}</div>
+  const dc=e.trend==="up"?"up":e.trend==="down"?"down":"na";
+  const arrow=e.trend==="up"?"▲":e.trend==="down"?"▼":"";
+  return `<div class="ev${e.hl?" hl":""}">
+    <div class="t">${e.t}</div>
     <div class="stars">${stars(e.stars)}</div>
-    <div class="ev-name">${esc(e.name)}</div>
-    <div class="ev-period">${esc(e.period)}</div>
-    <div class="ev-val ${actualCls}">${esc(e.actual)}</div>
-    <div class="ev-est">${esc(e.est)}</div>
-    <div class="ev-delta ${deltaCls}">${trend?trend+" ":""}${esc(e.delta)}</div>
+    <span class="tag ${e.cat}">${CATS.find(c=>c.key===e.cat).label}</span>
+    <div class="name">${esc(e.name)}</div>
+    <div class="val ${e.published?"":"na"}">${esc(e.actual)}</div>
+    <div class="est">${esc(e.est)}</div>
+    <div class="delta ${dc}">${arrow?arrow+" ":""}${esc(e.delta)}</div>
   </div>`;
 }
 
-/* ---------- 列表 ---------- */
 function renderList(){
-  const el=document.getElementById("list"); el.innerHTML="";
+  const el=document.getElementById("list");el.innerHTML="";
   let pool=EVENTS.slice();
-  if(state.cat!=="all") pool=pool.filter(e=>e.cat===state.cat);
-  if(state.query) pool=pool.filter(e=>e.name.toLowerCase().includes(state.query.toLowerCase()));
-  pool.sort((a,b)=>a.offset-b.offset || a.t.localeCompare(b.t));
-
-  if(pool.length===0){
-    el.innerHTML=`<div class="empty">本窗口暂无该类别安排。</div>`; return;
-  }
-  const groups={};
-  pool.forEach(e=>{ (groups[e.offset]=groups[e.offset]||[]).push(e); });
-  Object.keys(groups).sort((a,b)=>a-b).forEach(off=>{
-    off=+off; const dt=d(off);
-    const g=document.createElement("div");
-    g.className="group"; g.id="g-"+off;
-    const badge = off===0 ? "今日" : `T-${off}`;
-    g.innerHTML=`<div class="g-head${off<0?" past":""}">
-        <span class="bullet"></span>
-        <span class="g-date">${["周日","周一","周二","周三","周四","周五","周六"][dt.getDay()]} ${fmt(dt.getMonth(),dt.getDate())}</span>
-        <span class="tbadge">${badge}</span>
-        <span class="g-count">${groups[off].length} 项</span>
-      </div><div class="ev-scroll">${groups[off].map(rowHTML).join("")}</div>`;
-    el.appendChild(g);
+  if(state.cat!=="all")pool=pool.filter(e=>e.cat===state.cat);
+  if(state.q)pool=pool.filter(e=>e.name.toLowerCase().includes(state.q.toLowerCase()));
+  pool.sort((a,b)=>a.offset-b.offset||a.t.localeCompare(b.t));
+  if(!pool.length){el.innerHTML=`<div class="empty">当前筛选下没有匹配事件。</div>`;return;}
+  const g={};
+  pool.forEach(e=>(g[e.offset]=g[e.offset]||[]).push(e));
+  Object.keys(g).sort((a,b)=>a-b).forEach(k=>{
+    k=+k;const dt=d(k);
+    const box=document.createElement("div");
+    box.className="group";box.id="g-"+k;
+    const badge=k===0?"今天":`T-${k}`;
+    box.innerHTML=`<div class="g-head"><span class="sq"></span><span class="gd">${WD[dt.getDay()]} ${fmt(dt.getMonth(),dt.getDate())}</span><span class="tb">${badge}</span><span class="cnt">${g[k].length} 项</span></div>
+      <div class="ev-scroll"><div class="g-body">${g[k].map(rowHTML).join("")}</div></div>`;
+    el.appendChild(box);
   });
 }
 
-/* ---------- FOMC 倒计时 ---------- */
-function renderFomc(){
-  const now=new Date(); now.setHours(0,0,0,0);
-  const diff=Math.round((NEXT_FOMC-now)/86400000);
-  document.getElementById("fomc-countdown").textContent = diff>0 ? `还有 ${diff} 天` : "会议进行中";
-}
+function render(){renderChips();renderRail();renderKpis();renderList();}
 
-function render(){ renderRange(); renderStrip(); renderStats(); renderList(); renderFomc(); }
-
-/* ---------- 顶栏交互 ---------- */
-function toast(msg){
-  const t=document.getElementById("toast"); t.textContent=msg; t.classList.add("show");
-  clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove("show"),1800);
-}
-document.getElementById("btn-bell").addEventListener("click",()=>toast("演示环境：暂无新提醒"));
-document.getElementById("btn-toolbox").addEventListener("click",()=>toast("平台交易工具箱为演示入口"));
-document.getElementById("btn-user").addEventListener("click",()=>toast("演示环境：未登录"));
+document.getElementById("q").addEventListener("input",e=>{state.q=e.target.value.trim();renderList();});
+document.getElementById("bell").addEventListener("click",()=>toast("演示环境：暂无新提醒"));
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(t._h);t._h=setTimeout(()=>t.classList.remove("show"),1800);}
 
 render();
 </script>
